@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+  <script src="./lib/vue-router-3.0.1.js"></script>
+  <style>
+   
+  </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 我们要监听文本框数据的改变，这样才能拼接fullname -->
+        
+       <input type="text" v-model="firstname" v-on:keyup="getfullname"/>+
+       <input type="text" v-model="lastname" v-on:keyup="getfullname"/>=
+       <input type="text" v-model="fullname">
+    </div>
+    
+    <script>
+
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                firstname:'',
+                lastname:'',
+                fullname:''
+            },
+            methods:{
+                getfullname(){
+                    this.fullname=this.firstname+'-'+this.lastname                }
+            }
+        })
+    </script>
+
+</body>

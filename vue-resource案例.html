@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.4.0.js"></script>
+  <!-- vue-resource依赖于Vue,所以先导入Vue -->
+  <script src='./lib/vue-resource-1.3.4.js'></script>
+  <!-- this.$http.post 向Vue上挂载属性-->
+  <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+
+<body>
+    <div id="app">
+      <input type="button" value="get请求" v-on:click="getInfo">
+      <input type="button" value="post请求" v-on:click="postInfo">
+      <input type="button" value="jsonp请求" v-on:click="jsonpInfo">
+    </div>
+    <script>
+       var vm=new Vue({
+           el:'#app',
+           data:{},
+           methods:{
+             getInfo(){  //发起get请求
+              //发起get请求之后，通过.then输出
+               this.$http.get('http://www.liulongbin.top:3005/api/get736369newslist').then(res=>{
+                //通过res.body拿到服务器返回的成功数据 
+                console.log(res)
+               })
+             },
+             postInfo(){ //发起post请求
+              //手动发起的post请求，默认没有表单格式，所以有的服务器不能处理
+              //通过post方法的第三个参数options，设置提交的内容类型为普通的表单数据格式
+               this.$http.post('http://www.liulongbin.top:3005/api/post',{},{emulateJSON:true}).then(res=>{
+                 console.log(res.body)
+               })
+             },
+             jsonpInfo(){ //发起jsonp请求
+              this.$http.jsonp('http://www.liulongbin.top:3005/api/getnewslist').then(res=>{
+                console.log(res)
+              }).catch(error=>{
+                console.log(error)
+              })
+             }
+           }
+       })
+    </script>
+</body>

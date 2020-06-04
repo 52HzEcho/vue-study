@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+</head>
+
+<body>
+
+        <div id="app">
+            <par></par>
+        </div>
+        <script>
+            // 子组件
+            var ButtonCounter=Vue.component('button-counter',{
+                props:['msg'],
+                methods: {
+                    
+                },
+                template:`
+                  <p>{{msg}}</p>
+                `,
+            })
+
+
+            // 父组件 --调用子组件
+            Vue.component('par',{
+                // components: {
+                //     'button-counter': ButtonCounter
+                // },
+                data () {
+                    return {
+                        title:'我是父组件的数据'
+                    }
+                },
+                template:`
+                   <div>
+                       <button-counter v-bind:msg="title"></button-counter>
+                   </div>
+                `
+            })
+            var vm=new Vue({
+                el:'#app', 
+            })
+        </script>
+</body>

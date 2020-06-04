@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+  <script src="./lib/vue-router-3.0.1.js"></script>
+  <style>
+   
+  </style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <input type="text" v-model="firstname"/>+
+        <input type="text" v-model="lastname"/>=
+        <input type="text" v-model="fullname"/>
+       
+    </div>
+    
+    <script>
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                firstname:'',
+                lastname:'',
+                fullname:''
+            },
+            watch:{
+                'firstname':function(newValue,oldValue){
+                    console.log(newValue+'---'+oldValue)
+                    //newValue是更改后的新的值，oldValue是更新前的值
+                    // this.fullname=this.firstname+'-'+this.lastname
+                    this.fullname=newValue+'-'+this.lastname
+                },
+                'lastname':function(newValue){
+                    this.fullname=this.firstname+'-'+newValue
+                }
+            }
+        })
+    </script>
+
+</body>

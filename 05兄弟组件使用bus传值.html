@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+</head>
+
+<body>
+        <div id='app'>
+            <brother1></brother1>
+            <brother2></brother2>
+        </div>
+        <script>
+            
+            Vue.component('brother1',{
+                template:`
+                     <div>
+                        <p>{{firstmsg}}</p>
+                        <button v-on:click="getData">点我向兄弟组件传值</button>
+                     </div>
+                `,
+                data(){
+                    return{
+                        firstmsg:'我是兄弟一啊'
+                    }
+                },
+                methods:{
+                    getData(){
+                        bus.$emit('global',this.firstmsg)
+                    }
+                }
+            })
+            Vue.component('brother2',{
+                template:`
+                     <div>
+                        <p>{{secondmsg}}</p>
+                        <p>这是兄弟1传过来的数据：{{bromsg}}</p>
+                     </div>
+                `,
+                data(){
+                    return{
+                        secondmsg:'我是兄弟二啊',
+                        bromsg:''
+                    }
+                },
+                mounted(){
+                    bus.$on('global',(msg)=>{
+                        console.log(msg)
+                        this.bromsg=msg
+                    })
+                    // bus.$on('global',(val)=>{
+                    //     this.bromsg=val;
+                    // })
+                },
+                methods:{
+
+                }
+            })
+            var bus=new Vue()
+            var vm=new Vue({
+                el:'#app',
+
+            })
+        </script>
+</body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+</head>
+
+<body>
+        <!-- 事件调用机制的本质：
+            父组件向子组件传递一个方法，子组件调用这个方法，同时将数据当作参数传递给方法
+        -->
+        <div id='app'>
+           <parent></parent>
+        </div>
+        <script>
+            Vue.component('son',{
+                data(){
+                    return{
+                        msg:'我是子组件'
+                    }
+                },
+                methods:{
+                    myshow(){
+                        this.$emit('func',this.msg)
+                    }
+                },
+                template:`
+                    <div>
+                       <button v-on:click="myshow">点我向父组件传值</button>
+                    </div>
+                `
+            })
+            Vue.component('parent',{
+                data(){
+                    return{
+                        sonmsg:''
+                    }
+                },
+                methods:{
+                    showson(data){
+                        console.log(data)
+                        this.sonmsg=data 
+                    }
+                },
+                template:`
+                   <div>
+                      <son v-on:func="showson"></son>
+                      <p>{{sonmsg}}</p>
+                   </div>
+                `
+            }) 
+            var vm=new Vue({
+                el:'#app',
+            })
+        </script>
+</body>

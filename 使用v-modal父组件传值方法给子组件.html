@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+</head>
+
+<body>
+        <div id='app'>
+                <parent></parent>
+            </div>
+        <script>
+            Vue.component('child',{
+                data(){
+                    return {
+                        mymessage:this.message
+                    }
+                },
+                template:`
+                    <div>
+                        <input type="text" v-model="mymessage" v-on:input="passData(mymessage)"> 
+                    </div>
+                `,
+                props:['message'],//得到父组件传递过来的数据
+                methods:{
+                    passData(val){
+                        //触发父组件中的事件
+                        this.$emit('getChildData',val)
+                    }
+                }
+            })
+            Vue.component('parent',{
+                template:`
+                    <div>
+                        <p>this is parent compoent!</p>
+                        <child v-bind:message="message" v-on:getChildData="getChildData"></child>
+                    </div>
+                `,
+                data(){
+                    return {
+                        message:'hello'
+                    }
+                },
+                methods:{
+                    //执行子组件触发的事件
+                    getChildData(val){
+                        console.log(val)
+                    }
+                }
+            })
+            var app=new Vue({
+                el:'#app',
+            })
+
+        </script>
+</body>

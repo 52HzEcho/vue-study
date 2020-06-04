@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+</head>
+
+<body>
+
+        <div id="app">
+            <par></par>
+        </div>
+        <script>
+            // 子组件
+            var ButtonCounter=Vue.component('button-counter',{
+                data(){
+                    return{
+                        titleTxt:'这是子组件啊',
+                        counter:0
+                    }
+                },
+                methods: {
+                    increment(){
+                        this.$emit('increment')
+                        this.counter++
+                    },
+                    showmsg(){
+                        this.$emit('func')
+                        console.log('这是子组件的数据啊')
+                    },
+                },
+                template:`
+                  <button v-on:click="showmsg">这是子组件</button>
+                `,
+            })
+
+
+            // 父组件 --调用子组件
+            Vue.component('par',{
+                components: {
+                    'button-counter': ButtonCounter
+                },
+                data () {
+                    return {
+                        total:0
+                    }
+                },
+                methods:{
+                    countTotal(){
+                        this.total++
+                    },
+                    myshow(){
+                        console.log('这是父组件的数据啊')
+                    }
+                },
+                template:`
+                   <div>
+                       <button-counter v-on:func="myshow"></button-counter>
+                   </div>
+                `
+            })
+            var vm=new Vue({
+                el:'#app',
+                
+            })
+        </script>
+</body>

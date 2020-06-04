@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./lib/vue-2.4.0.js'></script>
+  <style>
+
+  </style>
+</head>
+
+<body> 
+    <div id="app">
+        <cal v-bind:showmsg="msg"></cal>
+    </div>
+
+    <script>
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                msg:'这是父组件'
+            },
+            methods:{},
+            components:{
+                
+                cal:{
+                    props:['showmsg'],
+                    template:'<h4>这是子组件---{{showmsg}}</h4>'
+                },
+               
+            }
+        })
+    </script>
+</body>

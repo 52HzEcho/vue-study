@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="././lib/vue-2.4.0.js"></script>
+  <script src="./lib/vue-resource-1.3.4.js"></script>
+  <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+
+<body>
+    <div id="app">
+
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">添加品牌</h3>
+              </div>
+              <div class="panel-body form-inline">
+                    <label>
+                        name:
+                        <input type="text" v-model="name" class="form-control">
+                    </label>
+                    <input type="button" value="添加" v-on:click="add" class="btn btn-primary"> 
+              </div>
+        </div>
+        
+        
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Ctime</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in list" v-for:key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.time}}</td>
+                    <td>
+                        <a href="" v-on:click.prevent="del(item.id)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <script>
+       var vm=new Vue({
+           el:'#app',
+           data:{
+               name:'',
+               list:[  //存放所有品牌的列表
+                   {id:1,name:'五菱',time:'2018-12-03'},
+                   {id:2,name:'宝马',time:'2018-04-22'}
+               ]
+           },
+           created(){ //当vm实例的data和methods初始化完毕后，vm实例会自动执行created生命周期函数
+             this.getAllList()
+           },
+           methods:{
+               getAllList(){  //获取品牌列表
+                //1.已经导入了v-resource，可以直接通过this.$http发起数据请求
+                //2.根据API文档，知道应该发起get请求
+                //3.this.$http.get('url').then(res=>{})
+                //4.通过then拿到服务器返回的result
+                //5.先判断result.status是否为0，如果等于0，就可以把resuLt.message赋值给this.list
+               this.$http.get('139.199.192.48:8888/api/getprodlist').then(res=>{
+                   console.log(res)
+                   //注意$http获取到的数据都在res.body中
+                   var result=res.body
+                   if(result.status===0){  //成功
+                       this.list=result.message
+                   }else{
+                       alert('获取数据失败')
+                    }
+                })   
+               },
+               add(){  //添加品牌信息到服务器
+                   //post请求
+                   this.$http.post('',{name:this.name},{emulateJSON:true}).then(res=>{
+                       if(res.body.status===0){
+                           //成功
+                           this.getAllList()
+                       }else{
+                           alert('添加失败')
+                       }
+                   })
+               },
+               del(id){  //删除品牌信息
+                   this.$http.get(''+id).then(res=>{
+                       if(res.body.status===0){
+                           this.getAllList()
+                       }else{
+                           alert('删除失败')
+                       }
+                   })
+               },
+           } 
+       })
+    </script>
+</body>
